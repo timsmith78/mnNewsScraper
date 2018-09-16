@@ -5,5 +5,12 @@
     <div class="card-body">
         <p class="card-text">{{summary}}</p>
     </div>
+    <h6 class="card-subtitle">Comments:</h6>
+    {{#each comments}}
+        <p>User: {{user}}</p>
+        <p>{{comment}}</p>
+    {{/each}}
+
+    <button class="btn btn-primary w-25 m-4" data-id="{{_id}}">Submit Comment</button>
 </li>
 <br>

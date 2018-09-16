@@ -12,11 +12,11 @@ const db = require('../models')
 // Render page
 function renderPage(res) {
     console.log("rendering")
-    db.Article.find({}, (err, data) => {
-        if (err) throw err
+    db.Article.find({}).populate("comments").then(data => {
         let hbsObj = {
             articles: data
         }
+        console.log(hbsObj)
         res.render('index', hbsObj)
     })
 }
@@ -72,9 +72,17 @@ router.get('/', (req, res) => {
         updateArticleDb(rawScrapeList, res)
 
     })
-
-
 })
 
+// Populate comments
+router.post('/comment', (req, res) => {
+    db.Comment.create({ user: req.body.user, comment: req.body.comment}).then(dbComment => {
+        db.Article.findOneAndUpdate( {_id: req.body.dataId}, { $push: { comments: dbComment._id}}).then(dbLibrary => {
+
+            res.json(dbComment)
+            
+        })
+    })
+})
 
 module.exports = router
