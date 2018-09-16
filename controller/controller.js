@@ -85,4 +85,11 @@ router.post('/comment', (req, res) => {
     })
 })
 
+// Remove comments
+router.get('/deleteComment/:id', (req, res) => {
+    db.Comment.findByIdAndRemove(req.params.id, comment => {
+        res.redirect('/')
+    })
+})
+
 module.exports = router
